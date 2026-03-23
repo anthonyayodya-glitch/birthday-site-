@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday මගෙ මැණික🎂</title>
+
+<style>
+* { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+body {
+  margin: 0;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+}
+
+.screen { display: none; text-align: center; padding: 20px; }
+.screen.active { display: block; }
+
+h1 { font-size: 28px; }
+p { font-size: 18px; }
+
+button {
+  padding: 12px 25px;
+  border: none;
+  border-radius: 25px;
+  margin-top: 15px;
+  font-size: 16px;
+  background: white;
+  color: #ff6f91;
+  cursor: pointer;
+}
+
+.music-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #fff;
+  color: #ff6f91;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 20px;
+}
+
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.timeline { margin-top: 20px; text-align: left; }
+.timeline-item {
+  background: rgba(255,255,255,0.2);
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 10px;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-btn" onclick="toggleMusic()">🎵</button>
+
+<canvas id="confetti"></canvas>
+
+<div class="screen active" id="s1">
+  <h1>Hey මගෙ මැණික ❤️</h1>
+  <p>I made something special for you 🥺</p>
+  <button onclick="startExperience()">Start 💖</button>
+</div>
+
+<div class="screen" id="s2">
+  <p>You are my happiness, my peace, my everything 💕</p>
+  <button onclick="next(3)">Next</button>
+</div>
+
+<div class="screen" id="s3">
+  <h1>Our Love Story 💕</h1>
+  <div class="timeline">
+    <div class="timeline-item">💫 Unforgettable meeting at university</div>
+    <div class="timeline-item">😊😍 Best friends for 2 years</div>
+    <div class="timeline-item">❤️ Became lovers</div>
+    <div class="timeline-item">💍 Forever together</div>
+  </div>
+  <button onclick="next(4)">Next 💖</button>
+</div>
+
+<div class="screen" id="s4">
+  <h1>Happy Birthday ❤️</h1>
+  <p>I will always stand by you, no matter what 💕</p>
+
+  <button onclick="startConfetti()">Celebrate 🎉</button>
+  <button onclick="next(5)">Next 💌</button>
+</div>
+
+<div class="screen" id="s5">
+  <h1>One Question for You 🥺</h1>
+  <p>Do you love me? 💖</p>
+
+  <div class="buttons">
+    <button onclick="answerLove(true)">Yes 💖</button>
+    <button onclick="answerLove(false)">No 😢</button>
+  </div>
+</div>
+
+<div class="screen" id="s6">
+  <h1>My Forever ❤️</h1>
+  <p>
+    No matter what you chose...
+    you are still my world 🌍💖<br><br>
+    I will love you, support you,
+    and stand by you always 💕<br><br>
+    Happy Birthday again, මගෙ මැණික 🎂❤️<br><br>
+    Love you forever - ඔයාගේ සුදු හාමිනේ 💖
+  </p>
+
+  <button onclick="startConfetti()">Celebrate Again 🎉</button>
+</div>
+
+<script>
+function startExperience() {
+  playMusic();
+  next(2);
+}
+
+function next(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s' + n).classList.add('active');
+}
+
+function answerLove(isYes) {
+  if(isYes){
+    alert("Yayyy 😍💖 I knew it! Love you sooo much මගෙ මැණික 💕");
+  } else {
+    alert("Aneyy... I'm crying now 😢💔 but I still love you 😭💖");
+  }
+  next(6);
+}
+
+// Music control
+const music = document.getElementById("bgMusic");
+let isPlaying = false;
+
+function playMusic() {
+  if (!isPlaying) {
+    music.play();
+    isPlaying = true;
+  }
+}
+
+function toggleMusic() {
+  if (music.paused) {
+    music.play();
+  } else {
+    music.pause();
+  }
+}
+
+// Confetti
+const canvas = document.getElementById('confetti');
+const ctx = canvas.getContext('2d');
+let confetti = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function createConfetti() {
+  for (let i = 0; i < 120; i++) {
+    confetti.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 6 + 2,
+      d: Math.random() * 50,
+      color: `hsl(${Math.random()*360},100%,50%)`
+    });
+  }
+}
+
+function drawConfetti() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  confetti.forEach(c => {
+    ctx.fillStyle = c.color;
+    ctx.fillRect(c.x,c.y,c.r,c.r);
+  });
+  confetti.forEach(c => {
+    c.y += 2;
+    if(c.y > canvas.height) c.y = -10;
+  });
+}
+
+function startConfetti() {
+  confetti = [];
+  createConfetti();
+  setInterval(drawConfetti, 20);
+}
+</script>
+
+</body>
+</html>
